@@ -3,15 +3,18 @@ from django.contrib.auth.models import User
 from django.core.cache import cache
 
 
-class Author(models.Model):
-    authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    def __str__(self) -> str:
-        return self.authorUser.username
-
-
 class Category(models.Model):
 
+    name = models.CharField(max_length=64, unique=True)
+
+    def get_category(self):
+        return self.name
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class Post(models.Model):
     TANKS = 'TK'
     HEALERS = 'HL'
     DAMAGEDEALER = 'DD'
@@ -26,7 +29,7 @@ class Category(models.Model):
     CATEGORY_CHOICES = (
         (TANKS, 'Танки'),
         (HEALERS, 'Хилы'),
-        (DAMAGEDEALER, 'ДД'),
+        (DAMAGEDEALER, 'Даммагеры'),
         (TRADERS, 'Торговцы'),
         (GUILDMASTERS, 'Гилдмастеры'),
         (QUESTGIVERS, 'Квестгиверы'),
@@ -36,48 +39,24 @@ class Category(models.Model):
         (WIZRADS, 'Мастера Заклинаний'),
     )
 
-    name = models.CharField(
-        max_length=2, choices=CATEGORY_CHOICES, default=GUILDMASTERS, unique=True)
-
-    def get_category(self):
-        return self.name
-
-    def __str__(self) -> str:
-        return self.name
-
-
-class Post(models.Model):
-
-    SELL = 'SL'
-    BUY = 'BY'
-    CHANGE = 'CH'
-    CATEGORY_CHOICES = (
-        (SELL, 'Продать'),
-        (BUY, 'Купить'),
-        (CHANGE, 'Обменять'),
-
-    )
-
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     postType = models.CharField(
-        max_length=2, choices=CATEGORY_CHOICES, default=SELL)
+        max_length=2, choices=CATEGORY_CHOICES)
     postCategory = models.ForeignKey(Category, on_delete=models.CASCADE)
     dateCreation = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=128)
     text = models.TextField()
     image = models.ImageField(upload_to='images/%Y-%m-%d/')
-    video = models.FileField(upload_to='videos/%Y-%m-%d/')
-    files = models.FileField(upload_to='files/%Y-%m-%d/')
 
     def preview(self):
         return self.text[:124] + '...'
 
     def __str__(self) -> str:
-        return f'{self.title} {self.preview()}'
+        return f'{self.title}'
 
     # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с постом
     def get_absolute_url(self):
-        return f'/post/{self.id}'
+        return f'/posts/{self.id}'
 
     def save(self, *args, **kwargs):
         # сначала вызываем метод родителя, чтобы объект сохранился

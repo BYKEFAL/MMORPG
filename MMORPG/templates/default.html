@@ -19,6 +19,8 @@
    <link rel="stylesheet" href="{%static 'assets/css/animate.css'%}">
    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
 
+   
+
    <title>
       {% block title %}
       {% endblock title %}
@@ -42,9 +44,15 @@
    {% include './includes/header.html' %}
    {% comment %} {%endcache header%} {% endcomment %}
 
-   <div class="container mt-2">
-      {% block content %}
-      {% endblock content %}
+   <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="page-content ">
+                {%block content%}
+                {%endblock content%}
+          </div>
+        </div>
+      </div>
    </div>
 
    {% comment %} {%cache 300 footer%} {% endcomment %}

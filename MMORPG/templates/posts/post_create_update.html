@@ -1,0 +1,36 @@
+{% extends 'default.html' %}
+
+
+{% block title %}
+{%if 'add' in request.path%}
+Post Create
+{%else%}
+Post Update
+{%endif%}
+{% endblock title %}
+
+
+
+{% block content %}
+<br>
+   {%if 'edit' in request.path%}
+   <h3>Edit Publication</h3>
+   {%else%}
+   <h3>Add Publication</h3>
+   {%endif%}
+
+
+<form method="POST" enctype="multipart/form-data">
+   {% csrf_token %}
+   {{ form }}
+   <br>
+   {%if 'edit' in request.path%}
+   <input class="btn" style="background-color: #ec6090;" type="submit" value="Accept changes">
+   <a href="{%url 'posts:post_detail' post.id%}"><input class="btn" style="background-color: #a960ec;" value="Go Back"></a>
+   {%else%}
+   <input class="btn" style="background-color: #ec6090;" type="submit" value="Add Publication">
+   {%endif%}
+   
+</form>
+
+{% endblock content %}

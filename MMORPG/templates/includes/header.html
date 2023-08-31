@@ -19,7 +19,7 @@
            <div class="col-12">
                <nav class="main-nav">
                    <!-- ***** Logo Start ***** -->
-                   <a href="#" class="logo">
+                   <a href="/" class="logo">
                        <img src="{%static 'assets/images/logonew.png'%}" alt="">
                    </a>
                    <!-- ***** Logo End ***** -->
@@ -31,13 +31,21 @@
                      </form>
                    </div>
                    <!-- ***** Search End ***** -->
+                   
                    <!-- ***** Menu Start ***** -->
                    <ul class="nav">
-                       <li><a href="#" class="active">Home</a></li>
-                       <li><a href="#">Browse</a></li>
-                       <li><a href="#">Details</a></li>
+                       <li><a href="/" class="active">Home</a></li>
+                       <li><a href="/posts">Browse</a></li>
+                       <li><a href="#">Search</a></li>
                        <li><a href="#">Streams</a></li>
-                       <li><a href="#">Profile <img src="{%static 'assets/images/profile-header.jpg'%}" alt=""></a></li>
+                       {% if user.is_authenticated %}
+                       <li class="self-li "><a href="/profile">Profile<img src="{%static 'assets/images/profile-header.jpg'%}" alt=""></a></li>
+                       <li><a href="/accounts/logout" >Log Out</a></li>
+                       {%else%}
+                       <li class="self-li"><a href="/accounts/login" >Log In</a></li>
+                       <li><a href="/accounts/signup" class=>Sign Up</a></li>
+                       {%endif%}
+                       
                    </ul>   
                    <a class='menu-trigger'>
                        <span>Menu</span>

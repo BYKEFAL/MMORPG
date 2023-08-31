@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +43,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'posts',
+    'accounts',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'widget_tweaks',
+    'bootstrap5',
+    'django_filters',
+    # при удалении поста из БД автоматически удаляет связанные с ним файлы.
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 SITE_ID = 1
@@ -67,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'django.template.context_processors.media',
             ],
         },
     },
@@ -123,21 +138,66 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-MEDIA_URL = 'media/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+# LOGOUT_REDIRECT_URL = '/sign/logout'
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+ACCOUNT_FORMS = {'signup': 'accounts.forms.BasicSignupForm'}
+
+# настройки allauth
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
+# ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/profile/'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
+# мои настройки из .env
+EMAIL_HOST = str(os.getenv('EMAIL_HOST'))
+EMAIL_PORT = str(os.getenv('EMAIL_PORT'))
+EMAIL_HOST_USER = str(os.getenv('EMAIL_HOST_USER'))
+EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_HOST_PASSWORD'))
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = str(os.getenv('DEFAULT_FROM_EMAIL'))
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+EMAIL_ADMIN = DEFAULT_FROM_EMAIL
+# тестовое мыло
+MY_TEST_EMAIL = str(os.getenv('MY_TEST_EMAIL'))
+
+# Для просмотра HTML-шаблонов, которые отправляются на мыло, в консоли
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ADMINS = [
+    ("admin", MY_TEST_EMAIL)
+]
+
 # кэширование
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
-        'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+#         # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
+#         'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
+#     }
+# }

@@ -1,0 +1,20 @@
+{% extends 'posts/post_detail.html' %}
+
+
+{% block title %}
+Post Delete!
+{% endblock title %}
+
+{%block deletepost%}
+<br>
+<div class="row">
+   <h3>Are yuor shure, Delete publications?</h3>
+   <form method="POST">
+      {% csrf_token %}
+      <input class="col-5 btn btn-danger" type="submit" value="YES!">
+      <a href="{%url 'posts:post_detail' post.id%}" class="col-5 btn btn-success">NO!</a>
+   </form>
+   
+   
+</div>
+{%endblock deletepost%}

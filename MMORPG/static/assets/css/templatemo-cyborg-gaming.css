@@ -66,6 +66,7 @@ ul, li {
   padding: 0;
   margin: 0;
   list-style: none;
+  color: #ff0000;
 }
 
 header, nav, section, article, aside, footer, hgroup {
@@ -85,6 +86,10 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+body{
+  min-height: 100vh;
+}
+
 
 a {
 	color: #CCC;
@@ -116,6 +121,12 @@ img {
   overflow: hidden;
 }
 
+.self-image{
+  min-width: 150px;
+  max-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}
 /* 
 ---------------------------------------------
 Global Styles
@@ -142,7 +153,7 @@ p {
 }
 
 ::selection {
-  background: #e75e8d;
+  /* background: #e75e8d; */
   color: #fff;
 }
 
@@ -460,14 +471,9 @@ Header Style
   letter-spacing: .3px;
 }
 
-.header-area .main-nav .nav li:last-child a {
-  background-color: #27292a;
-  padding: 8px 10px 8px 20px;
-  border-radius: 23px;
-}
 
-.header-area .main-nav .nav li:last-child a img {
-  max-width: 30px;
+.header-area .main-nav .nav li a img {
+  max-width: 25px;
   border-radius: 50%;
   margin-left: 5px;
 }
@@ -477,9 +483,14 @@ Header Style
   padding-left: 25px !important;
 }
 
+.self-li:hover a{
+  color: #fff !important;
+  background-color: #e75e8d !important;
+}
+
 .header-area .main-nav .nav li:hover a,
 .header-area .main-nav .nav li a.active {
-  color: #e75e8d !important;
+  color: #e75e8d;
 }
 
 .header-area .main-nav .nav li:last-child:hover a,
@@ -618,9 +629,9 @@ Header Style
   min-height: 70px;
 }
 
-.header-area.header-sticky .nav li a.active {
+/* .header-area.header-sticky .nav li a.active {
   color: #fff;
-}
+} */
 
 @media (max-width: 1200px) {
   .header-area .main-nav .nav li {

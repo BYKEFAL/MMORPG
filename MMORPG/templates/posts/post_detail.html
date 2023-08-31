@@ -1,0 +1,61 @@
+{% extends 'default.html' %}
+
+{%block title%} Detail! {%endblock title%}
+
+{%load static%}
+
+{%block content%}
+
+<br>
+<div class="card mb-3" style="max-width: 100%;">
+   <div class="row g-0">
+     <div class="col-md-4 ">
+      <a href="{{post.image.url}}" target="_blank"><img src="{{post.image.url}}" class="self-image"  alt="Picture"></a>
+      </div>
+     <div class="col-md-8" style="background-color: #27292a;">
+       <div class="card-body ">
+         <h3 style="color: #ec6090;">{{post.title}} </h3>
+         <br>
+         <h4>Разместил:&#8200;&#8200; {{post.author.username}}</h4>
+         <h4>Дата:&#8200;&#8200; {{post.dateCreation|date:'d-m-Y'}}</h4>
+         <br>
+          <h4><em>категория:&#8200;&#8200;{{post.postCategory}}</em></h4>
+         <h4><em>класс:&#8200;&#8200;{{post.get_postType_display}}</em></h4>
+         <br>
+         <div class="row">
+            {%block deletepost%}
+            {% if request.user.username == post.author.username %}
+            <div class="col-lg main-border-button">
+               <a href="{%url 'posts:post_update' post.id%}">Редактировать</a>
+            </div>
+            <div class="col-lg main-border-button">
+               <a href="{%url 'posts:post_delete' post.id%}">Удалить</a>
+            </div>
+            <div class="col-lg main-border-button">
+               <a href="{%url 'posts:posts_profile'%}">Мои публикации</a>
+            </div>
+            {%else%}
+            <div class=" col-lg-4 main-border-button">
+               <a href="#">Откликнуться</a>
+            </div>
+            <div class="col-lg-4 main-border-button">
+               <a href="{%url 'posts:posts_page'%}">Все публикации</a>
+            </div>
+            {%endif%}
+            {%endblock deletepost%}
+         </div>   
+       </div>
+     </div>
+   </div>
+   <div class="card-footer" style="background-color: #27292a;">
+      <br>
+         <h6>Описание:</h6>
+         <p class="card-text">{{post.text}}</p>
+         <br>
+    </div>
+ </div>
+
+ 
+
+
+ {%endblock content%}

@@ -1,0 +1,117 @@
+{% extends 'default.html' %}
+
+{%block title%} Publications! {%endblock title%}
+
+{%load static%}
+
+{%block content%}
+<div class="row">
+   <div class="col-lg-12">
+     <div class="featured-games header-text">
+       <div class="heading-section">
+         <h4>Publications<em>Rolls</em> </h4>
+       </div>
+       <div class="owl-features owl-carousel">
+         {%for i in postroll%}
+         <div class="item">
+           <div class="thumb">
+             <img src="{{i.image.url}}" width="150" height="150" alt="Picture">
+             <div class="hover-effect">
+               <a href="{% url 'posts:post_detail' i.id %}"><h6>{{i.title}}</h6></a>
+             </div>
+           </div>
+           <a href="{% url 'posts:post_detail' i.id %}"><h4>{{i.title}}</h4><br></a>
+           <h4><span>by "{{i.author.username}}"</span></h4>
+           <ul>
+             <li><i class="fa fa-star"></i> 4.8</li>
+             <li><i class="fa fa-download"></i> 2.3M</li>
+           </ul>
+         </div>
+         {%endfor%}
+        </div>
+      
+ <!-- ***** Publications ***** -->
+<br>
+<div class='row'>
+<div class="featured-games header-text">
+  <div class="heading-section">
+    <h4>All<em>Publications</em> </h4>
+  </div>
+  <!-- ***** Publications List start ***** -->
+  {%for i in posts%}
+  <div class="card mb-3" style="max-width: 100%; cursor: pointer;" onclick="window.location='/posts/{{i.pk}}'">
+    <div class="row g-0">
+      <div class="col-md-4 ">
+        <img src="{{i.image.url}}" class="self-image"  alt="Picture">
+      </div>
+      <div class="col-md-8" style="background-color: #27292a;" >
+        <div class="card-body ">
+          <h3 style="color: #ec6090;">{{i.title}} </h3>
+          <p>by "{{i.author.username}}" - {{i.dateCreation|date:'d-m-Y'}}</p>
+          <br>
+          <p class="card-text">{{i.preview}}</p>
+          <br>
+          <h4><em>категория:&#8200;&#8200;{{i.postCategory}}</em></h4>
+          <h4><em>класс:&#8200;&#8200;{{i.get_postType_display}}</em></h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+</div> 
+</div> 
+
+{% include 'includes/paginator.html' %}
+<!-- ***** Publications List end ***** -->
+
+ <!-- ***** Start Stream Start ***** -->
+ <div class="start-stream">
+   <div class="col-lg-12">
+     <div class="heading-section">
+       <h4><em>How To ADD </em> Your Publications</h4>
+     </div>
+     <div class="row">
+       <div class="col-lg-4">
+         <div class="item">
+           <div class="icon">
+             <img src="{%static 'assets/images/service-01.jpg'%}" alt="" style="max-width: 60px; border-radius: 50%;">
+           </div>
+           <h4>Sign up and Go To Your Profile</h4>
+           <p>of type and scrambled it to make a type specimen book. It has survived not only five 
+            centuries, but also the leap into elect...</p>
+         </div>
+       </div>
+       <div class="col-lg-4">
+         <div class="item">
+           <div class="icon">
+             <img src="{%static 'assets/images/service-02.jpg'%}" alt="" style="max-width: 60px; border-radius: 50%;">
+           </div>
+           <h4>Switch On button Add Publications</h4>
+           <p> type specimen book. It has survived not only five 
+            centuries, but also the leap into elect</p>
+         </div>
+       </div>
+       <div class="col-lg-4">
+         <div class="item">
+           <div class="icon">
+             <img src="{%static 'assets/images/service-03.jpg'%}" alt="" style="max-width: 60px; border-radius: 50%;">
+           </div>
+           <h4>You Are Did It</h4>
+           <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
+         </div>
+       </div>
+       <div class="col-lg-12">
+         <div class="main-button">
+           <a href="/profile">Go To Profile</a>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+ <!-- ***** Start Stream End ***** -->
+
+ 
+
+
+
+{%endblock content%}

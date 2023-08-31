@@ -1,0 +1,56 @@
+{% extends 'default.html' %}
+
+{%block title%} Profile! {%endblock title%}
+
+{%load static%}
+
+{%block content%}
+
+<div class="row">
+   <div class="col-lg-12">
+     <div class="main-profile ">
+       <div class="row">
+         <div class="col-lg-4">
+           <img src="{%static "assets/images/profile.jpg"%}" alt="" style="border-radius: 23px;">
+         </div>
+         <div class="col-lg-4 ">
+           <div class="main-info header-text">
+            {%if is_common_user%}
+            <p><span>Common profile</span></p>
+            {%else%}
+            <p><span>Profile without groups</span></p>
+            {%endif%}
+             <h4>{{user.username}}</h4>
+             <p>Status!</p>
+           </div>
+         </div>
+         <div class="col-lg-4">
+          <h4>Menu:</h4>
+          <div class="main-border-button">
+            <a href="/posts">All Publications</a>
+            </div>
+            <div class="main-border-button">
+              <a href="{%url 'posts:posts_profile'%}">My Publications</a>
+            </div>
+            <div class="main-border-button">
+              <a href="#">Responded Publications</a>
+            </div>
+        </div>
+         {% comment %} <div class="col-lg-4 align-self-center">
+           <ul>
+             <li>Games Downloaded <span>10</span></li>
+             <li>Friends Online <span>10</span></li>
+             <li>Live Streams <span>10</span></li>
+             <li>Clips <span>10</span></li>
+           </ul>
+         </div> {% endcomment %}
+       </div>
+       
+     </div>
+   </div>
+ </div>
+
+ {%block mypublications%}
+ {%endblock mypublications%}
+
+ {%endblock content%}
