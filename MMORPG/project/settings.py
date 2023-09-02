@@ -42,12 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'posts',
+    'posts.apps.PostsConfig',
     'accounts',
 
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
     'widget_tweaks',
     'bootstrap5',
@@ -150,7 +151,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/profile'
 # LOGOUT_REDIRECT_URL = '/sign/logout'
 
 AUTHENTICATION_BACKENDS = [

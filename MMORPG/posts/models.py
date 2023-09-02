@@ -14,6 +14,15 @@ class Category(models.Model):
         return self.name
 
 
+class Feedback(models.Model):
+    feedbackUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    dateCreation = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f'Отклик-{self.feedbackUser} №{self.pk}'
+
+
 class Post(models.Model):
     TANKS = 'TK'
     HEALERS = 'HL'
@@ -47,6 +56,7 @@ class Post(models.Model):
     title = models.CharField(max_length=128)
     text = models.TextField()
     image = models.ImageField(upload_to='images/%Y-%m-%d/')
+    respondent = models.ManyToManyField(Feedback, through='FeedBackMany')
 
     def preview(self):
         return self.text[:124] + '...'
@@ -67,8 +77,6 @@ class Post(models.Model):
 # отклик
 
 
-class Feedback(models.Model):
-    commentPost = models.ForeignKey(Post, on_delete=models.CASCADE)
-    commentUser = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField()
-    dateCreation = models.DateTimeField(auto_now_add=True)
+class FeedBackMany(models.Model):
+    postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
+    respondentThrough = models.ForeignKey(Feedback, on_delete=models.CASCADE)

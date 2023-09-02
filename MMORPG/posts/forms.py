@@ -41,3 +41,14 @@ class PostAddForm(ModelForm):
             'text': 'Описание',
             'image': 'Фото/Картинка',
         }
+
+
+class ResponseAddForm(ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['text']
+        widgets = {
+
+            'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Введите текст'}),
+
+        }

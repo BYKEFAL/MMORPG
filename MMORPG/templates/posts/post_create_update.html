@@ -13,11 +13,11 @@ Post Update
 
 {% block content %}
 <br>
-   {%if 'edit' in request.path%}
-   <h3>Edit Publication</h3>
-   {%else%}
-   <h3>Add Publication</h3>
-   {%endif%}
+{%if 'edit' in request.path%}
+<h3>Edit Publication</h3>
+{%else%}
+<h3>Add Publication</h3>
+{%endif%}
 
 
 <form method="POST" enctype="multipart/form-data">
@@ -26,11 +26,13 @@ Post Update
    <br>
    {%if 'edit' in request.path%}
    <input class="btn" style="background-color: #ec6090;" type="submit" value="Accept changes">
-   <a href="{%url 'posts:post_detail' post.id%}"><input class="btn" style="background-color: #a960ec;" value="Go Back"></a>
+   <a href="{%url 'posts:post_detail' post.id%}"><input class="btn" style="background-color: #a960ec;"
+         value="Go Back"></a>
    {%else%}
    <input class="btn" style="background-color: #ec6090;" type="submit" value="Add Publication">
+   <a href="{%url 'profile:profile_index'%}"><input class="btn" style="background-color: #a960ec;" value="Go Back"></a>
    {%endif%}
-   
+
 </form>
 
 {% endblock content %}

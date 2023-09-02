@@ -1,0 +1,42 @@
+{% extends 'accounts/profile_posts.html' %}
+
+{%block responded_publications%}
+{% if posts %}
+<div class="heading-section">
+   <h4>MYResponded<em>Publications</em> </h4>
+</div>
+{{posts}}
+<table class="table table-striped ">
+   {% for i in posts %}
+   {%if i.respondent.all%}
+   <tr>
+      <td>
+         <img style="max-width: 70px; max-height:70px;" src="{{ i.image.url }}" class="self-image" alt="Picture">
+      </td>
+      <td>
+         <p>{{ i.title }}</p>
+      </td>
+      <td>
+         <p>{{ i.dateCreation|date:'d-m-Y'}}</p>
+      </td>
+      <td>
+         <div class=" col-lg-4 main-border-button">
+            <a href="{%url 'posts:post_detail' i.id%}">Details</a>
+         </div>
+
+      </td>
+      <td>
+         <div class=" col-lg-4 main-border-button">
+            <a href="{%url 'posts:response_detail' i.id%}">ViewResponses</a>
+         </div>
+      </td>
+   </tr>
+   {%endif%}
+   {% endfor %}
+</table>
+{%else%}
+<div class="heading-section">
+   <h4>NO-<em>Publications</em> </h4>
+</div>
+{%endif%}
+{%endblock responded_publications%}

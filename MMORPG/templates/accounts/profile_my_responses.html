@@ -1,0 +1,101 @@
+{% extends 'accounts/profile.html' %}
+{%load static%}
+
+{%block responses%}
+<br>
+<div class="row">
+   <div class="col-lg-12">
+      <div class='row'>
+         <div class="featured-games header-text">
+            {% if posts %}
+            <div class="heading-section">
+               <h4>MY<em>Responses</em> </h4>
+            </div>
+            <table class="table table-striped ">
+               {% for i in posts %}
+               <tr>
+                  <td>
+                     <img style="max-width: 70px; max-height:70px;" src="{{ i.image.url }}" class="self-image"
+                        alt="Picture">
+                  </td>
+                  <td>
+                     <p>{{ i.title }}</p>
+                  </td>
+                  <td>
+                     <p>{{ i.dateCreation|date:'d-m-Y'}}</p>
+                  </td>
+                  <td>
+                     <div class=" col-lg-4 main-border-button">
+                        <a href="{%url 'posts:post_detail' i.id%}">Details</a>
+                     </div>
+
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                  </td>
+                  <td colspan="3">
+                     <div class="card">
+                        <div class="card-body p-2">
+                           <div class="row">
+                              <div class="col">
+
+                                 <div class="flex-grow-1 flex-shrink-1">
+                                    <div class="d-flex flex-start mt-4">
+                                       <a class="me-3" href="#">
+                                          <img class="rounded-circle shadow-1-strong"
+                                             src="{%static 'assets/images/profile-header.jpg'%}" alt="avatar" width="65"
+                                             height="65" />
+                                       </a>
+                                       {%for resp in i.respondent.all%}
+                                       {%if resp.feedbackUser == request.user%}
+                                       <div class="flex-grow-1 flex-shrink-1">
+                                          <div>
+                                             <div class="d-flex justify-content-between align-items-center">
+
+                                                <p class="mb-1">
+                                                   {{resp.feedbackUser.username}}
+                                                   <span class="small">-
+                                                      {{resp.dateCreation|date:'d.m.Y H:i'}}</span>
+                                                </p>
+
+                                             </div>
+                                             <p class="small mb-0">
+                                                {{resp.text}}
+                                             </p>
+                                             <div class="d-flex flex-row align-items-center">
+                                                <a class="btn small text-muted ml-2">Принято</a>
+                                                <a class="btn small text-muted ml-2">Удалить</a>
+                                             </div>
+
+                                          </div>
+                                       </div>
+                                       {%endif%}
+                                       {%endfor%}
+                                    </div>
+                                 </div>
+
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </td>
+               </tr>
+
+               {% endfor %}
+            </table>
+            {%else%}
+            <div class="heading-section">
+               <h4>NO-<em>Responses</em> </h4>
+            </div>
+            {%endif%}
+
+            {% include 'includes/paginator.html' %}
+
+         </div>
+      </div>
+   </div>
+</div>
+
+
+{%endblock responses%}

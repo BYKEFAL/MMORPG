@@ -1,0 +1,18 @@
+{% extends 'posts/post_detail.html' %}
+
+{%block title%} Response Create! {%endblock title%}
+
+{%load static%}
+
+{%block createresponse%}
+
+<form method="POST" enctype="multipart/form-data">
+   {% csrf_token %}
+   {{ form }}
+   <br>
+   <input class="btn" style="background-color: #ec6090;" type="submit" value="Add Response">
+   <a href="{%url 'posts:post_detail' post.id%}"><input class="btn" style="background-color: #a960ec;"
+         value="Go Back"></a>
+</form>
+
+{%endblock createresponse%}

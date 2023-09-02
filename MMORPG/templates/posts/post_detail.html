@@ -9,53 +9,98 @@
 <br>
 <div class="card mb-3" style="max-width: 100%;">
    <div class="row g-0">
-     <div class="col-md-4 ">
-      <a href="{{post.image.url}}" target="_blank"><img src="{{post.image.url}}" class="self-image"  alt="Picture"></a>
+      <div class="col-md-4 ">
+         <a href="{{post.image.url}}" target="_blank"><img src="{{post.image.url}}" class="self-image"
+               alt="Picture"></a>
       </div>
-     <div class="col-md-8" style="background-color: #27292a;">
-       <div class="card-body ">
-         <h3 style="color: #ec6090;">{{post.title}} </h3>
-         <br>
-         <h4>Разместил:&#8200;&#8200; {{post.author.username}}</h4>
-         <h4>Дата:&#8200;&#8200; {{post.dateCreation|date:'d-m-Y'}}</h4>
-         <br>
-          <h4><em>категория:&#8200;&#8200;{{post.postCategory}}</em></h4>
-         <h4><em>класс:&#8200;&#8200;{{post.get_postType_display}}</em></h4>
-         <br>
-         <div class="row">
-            {%block deletepost%}
-            {% if request.user.username == post.author.username %}
-            <div class="col-lg main-border-button">
-               <a href="{%url 'posts:post_update' post.id%}">Редактировать</a>
-            </div>
-            <div class="col-lg main-border-button">
-               <a href="{%url 'posts:post_delete' post.id%}">Удалить</a>
-            </div>
-            <div class="col-lg main-border-button">
-               <a href="{%url 'posts:posts_profile'%}">Мои публикации</a>
-            </div>
-            {%else%}
-            <div class=" col-lg-4 main-border-button">
-               <a href="#">Откликнуться</a>
-            </div>
-            <div class="col-lg-4 main-border-button">
-               <a href="{%url 'posts:posts_page'%}">Все публикации</a>
-            </div>
+      <div class="col-md-8" style="background-color: #27292a;">
+         <div class="card-body ">
+            <h3 style="color: #ec6090;">{{post.title}} </h3>
+            {%if request.user.id == post.author.id%}
+            <h5 style="color:#a960ec;">MY Publication</h5>
             {%endif%}
-            {%endblock deletepost%}
-         </div>   
-       </div>
-     </div>
+            <br>
+            <h4>Разместил:&#8200;&#8200; {{post.author.username}}</h4>
+            <h4>Дата:&#8200;&#8200; {{post.dateCreation|date:'d-m-Y'}}</h4>
+            <br>
+            <h4><em>категория:&#8200;&#8200;{{post.postCategory}}</em></h4>
+            <h4><em>класс:&#8200;&#8200;{{post.get_postType_display}}</em></h4>
+            <br>
+            <div class="row">
+               {%block deletepost%}
+               {% if request.user.username == post.author.username %}
+               <div class="col-lg main-border-button">
+                  <a href="{%url 'posts:post_update' post.id%}">Редактировать</a>
+               </div>
+               <div class="col-lg main-border-button">
+                  <a href="{%url 'posts:post_delete' post.id%}">Удалить</a>
+               </div>
+               <div class="col-lg main-border-button">
+                  <a href="{%url 'posts:profile_posts'%}">Мои публикации</a>
+               </div>
+               {%else%}
+               {%if added_respondents%}
+               {%for resp in added_respondents%}
+               {% if request.user.username == resp.feedbackUser.username %}
+               <div class=" col-lg-6 main-border-button">
+                  <a style="background-color: white;">Вы уже оставили отклик!</a>
+               </div>
+               <div class="col-lg-4 main-border-button">
+                  <a href="{%url 'posts:posts_page'%}">Все публикации</a>
+               </div>
+               {%endif%}
+               {%endfor%}
+               {%else%}
+               <div class=" col-lg-4 main-border-button">
+                  <a href="{%url 'posts:response_create' post.id%}">Откликнуться</a>
+               </div>
+               <div class="col-lg-4 main-border-button">
+                  <a href="{%url 'posts:posts_page'%}">Все публикации</a>
+               </div>
+               {%endif%}
+               {%endif%}
+               {%endblock deletepost%}
+            </div>
+         </div>
+      </div>
    </div>
    <div class="card-footer" style="background-color: #27292a;">
       <br>
-         <h6>Описание:</h6>
-         <p class="card-text">{{post.text}}</p>
-         <br>
-    </div>
- </div>
+      <h6>Описание:</h6>
+      <p class="card-text">{{post.text}}</p>
+      <br>
+   </div>
+   <div class="card-footer" style="background-color: #27292a; color:black;">
+      {%block createresponse%}
+      {%if postrespondent%}
+      <br>
+      <h6>Отклики:</h6>
+      <br>
+      {%for resp in post.respondent.all%}
+      <div class="card mb-4 text-color-card">
+         <div class="card-body">
+            <p>{{resp.text}}</p>
 
- 
+            <div class="d-flex justify-content-between">
+               <div class="d-flex flex-row align-items-center">
+                  <img src="{%static 'assets/images/profile-header.jpg'%}" alt="avatar" width="25" height="25" />
+                  <p class="small mb-0 ms-2">{{resp.feedbackUser.username}}</p>
+               </div>
+               <div class="d-flex flex-row align-items-center">
+                  <p class="small text-muted mb-0">Upvote?</p>
+                  <i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                  <p class="small text-muted mb-0">3</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      {%endfor%}
+      {%endif%}
+      {%endblock createresponse%}
+   </div>
+</div>
 
 
- {%endblock content%}
+
+
+{%endblock content%}
