@@ -5,12 +5,12 @@ First create virtualenv (venv) in you directory
 
 Create .env file and install your settings for mailing:
 
-    $EMAIL_HOST = "..."
-    $EMAIL_PORT = "..."
-    $EMAIL_HOST_USER = "..." 
-    $EMAIL_HOST_PASSWORD = "..."
-    $DEFAULT_FROM_EMAIL = "..."
-    $EMAIL_USE_SSL = True  
+    $ EMAIL_HOST = "..."
+    $ EMAIL_PORT = "..."
+    $ EMAIL_HOST_USER = "..." 
+    $ EMAIL_HOST_PASSWORD = "..."
+    $ DEFAULT_FROM_EMAIL = "..."
+    $ EMAIL_USE_SSL = True  
 
 Second clone the repository from Github and switch to the new directory:
 
@@ -29,4 +29,4 @@ Then simply apply the migrations:
     
 You can now run the development server:
 
-    $ python manage.py run
+    $ python manage.py runserver
