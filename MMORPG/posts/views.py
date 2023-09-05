@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, resolve
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+from django.core.exceptions import PermissionDenied
 
 from .models import *
 from .forms import PostAddForm, ResponseAddForm
@@ -82,6 +87,12 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
         id = self.kwargs.get('pk')
         return Post.objects.get(pk=id)
 
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != self.request.user:
+            raise PermissionDenied("Somebody try to edit other publication!")
+        return super(PostUpdate, self).dispatch(request, *args, **kwargs)
+
 
 class PostsProfileList(ListView):
     model = Post
@@ -142,8 +153,74 @@ class RespondendPublicationList(ListView):
             author=self.request.user.id)
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        posts = Post.objects.filter(
+            author=self.request.user.id)
+        respdict = []
+        for i in posts:
+            if i.respondent:
+                respdict.append(True)
+
+        context['respondenttrue'] = respdict
+        return context
+
 
 class ViewResponsesDetail(DetailView):
     model = Post
     template_name = 'accounts/profile_responses_detail.html'
     context_object_name = 'post'
+
+
+@login_required
+def feedback_accept(request, pk):
+
+    feedback = Feedback.objects.get(pk=pk)
+    post = Post.objects.get(respondent=feedback)
+    user = feedback.feedbackUser
+    feedback.acception = True
+    feedback.save(update_fields=["acception"])
+
+    email = user.email
+
+    html = render_to_string(
+        'mailing/accept_response_notification.html',
+        {
+            'feedback': feedback,
+            'user': user,
+            'post': post,
+        },
+    )
+
+    msg = EmailMultiAlternatives(
+        subject='Ваш отклик принят!',
+        body=f'{feedback.text}',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[email, ],
+    )
+
+    msg.attach_alternative(html, 'text/html')
+    try:
+        msg.send()  # отсылаем
+    except Exception as e:
+        print(e)
+    redirect(request.META.get('HTTP_REFERER'))
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def feedback_no_accept(request, pk):
+    feedback = Feedback.objects.get(pk=pk)
+    feedback.acception = False
+    feedback.save(update_fields=["acception"])
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def feedback_delete(request, pk):
+    feedback = Feedback.objects.get(pk=pk)
+    feedback.delete()
+
+    return redirect(request.META.get('HTTP_REFERER'))

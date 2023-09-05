@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Еженедельное оповещение</title>
 </head>
+
 <body>
-<h1>{{user_name.username}}, для вас новые новости и статьи на нашем портале: </h1>
-<h2>В категории - {{ posts_info.category }}:</h2>
-{% for post in posts_info.posts %}
-    <a href="http://127.0.0.1:8000{% url 'news:first_post_detail' post.id %}">{{post.title}}</a>
-{% endfor %}
+    <h1>{{user_name.username}}, для вас новые обьявления на нашем портале: </h1>
+    <h2>В категории - {{ posts_info.category }}:</h2>
+    {% for post in posts_info.posts %}
+    <a href="http://127.0.0.1:8000{% url 'posts:post_detail' post.id %}">{{post.title}}</a>
+    {% endfor %}
 </body>
+
 </html>

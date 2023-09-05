@@ -48,13 +48,13 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
 
     'widget_tweaks',
     'bootstrap5',
     'django_filters',
     # при удалении поста из БД автоматически удаляет связанные с ним файлы.
     'django_cleanup.apps.CleanupConfig',
+    'django_apscheduler',
 ]
 
 SITE_ID = 1

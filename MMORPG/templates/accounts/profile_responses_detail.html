@@ -63,8 +63,17 @@
                                              </p>
                                           </div>
                                           <div class="d-flex flex-row align-items-center">
-                                             <a class="btn small text-muted ml-2">Принять</a>
-                                             <a class="btn small text-muted ml-2">Удалить</a>
+                                             {%if not resp.acception%}
+                                             <a href="{%url 'posts:feedback_accept' resp.id%}"
+                                                class="btn small text-muted ml-2">Принять</a>
+                                             <a href="{%url 'posts:feedback_delete' resp.id%}"
+                                                class="btn small text-muted ml-2">Удалить</a>
+                                             {%else%}
+                                             <p class="btn btn-success small text-white ml-2">Вы приняли отклик!</p>
+                                             <a href="{%url 'posts:feedback_no_accept' resp.id%}"
+                                                class="btn btn-secondary small text-white ml-2">Отменить</a>
+                                             {%endif%}
+
                                           </div>
                                        </div>
                                     </div>

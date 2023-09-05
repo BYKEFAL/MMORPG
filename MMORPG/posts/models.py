@@ -18,6 +18,7 @@ class Feedback(models.Model):
     feedbackUser = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     dateCreation = models.DateTimeField(auto_now_add=True)
+    acception = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f'Отклик-{self.feedbackUser} №{self.pk}'

@@ -1,13 +1,13 @@
 {% extends 'accounts/profile_posts.html' %}
 
 {%block responded_publications%}
-{% if posts %}
+{% if respondenttrue %}
 <div class="heading-section">
    <h4>MYResponded<em>Publications</em> </h4>
 </div>
-{{posts}}
 <table class="table table-striped ">
    {% for i in posts %}
+
    {%if i.respondent.all%}
    <tr>
       <td>
@@ -36,7 +36,7 @@
 </table>
 {%else%}
 <div class="heading-section">
-   <h4>NO-<em>Publications</em> </h4>
+   <h4>NO-Responded<em>Publications</em> </h4>
 </div>
 {%endif%}
 {%endblock responded_publications%}

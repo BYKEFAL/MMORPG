@@ -64,8 +64,13 @@
                                                 {{resp.text}}
                                              </p>
                                              <div class="d-flex flex-row align-items-center">
-                                                <a class="btn small text-muted ml-2">Принято</a>
-                                                <a class="btn small text-muted ml-2">Удалить</a>
+                                                {%if resp.acception%}
+                                                <a class="btn btn-success small text-white ml-2">Ваш отклик принят!</a>
+                                                {%else%}
+                                                <p class="btn btn-secondary small text-white ml-2">Ожидает принятия</p>
+                                                {%endif%}
+                                                <a href="{%url 'posts:feedback_delete' resp.id%}"
+                                                   class="btn small text-muted ml-2">Удалить</a>
                                              </div>
 
                                           </div>
